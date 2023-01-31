@@ -1,0 +1,10 @@
+.elements__element {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 282px;
+  min-height: 361px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  place-self: center center;
+}

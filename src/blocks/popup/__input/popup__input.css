@@ -1,0 +1,57 @@
+.popup__input {
+  width: 358px;
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 30px;
+  color: rgba(0, 0, 0, 1);
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.popup__input_type_name {
+  margin: 41px 0 0 34px;
+}
+
+.popup__input_type_profession {
+  margin: 11px 0 0 34px;
+}
+
+.popup__input_type_place {
+  margin: 41px 0 0 34px;
+}
+
+.popup__input_type_reference {
+  margin: 11px 0 0 34px;
+}
+
+@media screen and (max-width: 598px) {
+  .popup__input {
+    width: 238px;
+  }
+}
+
+@media screen and (max-width: 598px) {
+  .popup__input_type_name {
+    margin: 68px 0 0 20px;
+  }
+}
+
+@media screen and (max-width: 598px) {
+  .popup__input_type_profession {
+    margin: 9px 0 0 20px;
+  }
+}
+
+@media screen and (max-width: 598px) {
+  .popup__input_type_place {
+    margin: 68px 0 0 20px;
+  }
+}
+
+@media screen and (max-width: 598px) {
+  .popup__input_type_reference {
+    margin: 9px 0 0 20px;
+  }
+}
