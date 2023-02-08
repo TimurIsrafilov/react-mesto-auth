@@ -16,13 +16,10 @@ import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
-
 import Login from "./Login.js";
 import Register from "./Register.js";
-
 import InfoTooltip from "./InfoTooltip.js";
-
-import * as auth from "../auth.js";
+import * as auth from "../utils/auth.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -33,9 +30,10 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(
-    // {email: "",}
-    "");
+  const [userData, setUserData] = useState("");
+
+  const [loginInfoPopupOpen, setLoginInfoPopupOpen] = useState(false);
+  const [registeredIn, setRegisteredIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -43,38 +41,48 @@ function App() {
     handleTokenCheck();
   }, []);
 
-  // const handleLogin = (formValue) => {
-  //   auth.authorize(formValue.email, formValue.password).then((data) => {
-  //     if (data.token) {
-  //       localStorage.setItem("token", data.token);
-  //       setLoggedIn(true);
-  //       navigate("/home", { replace: true });
-  //     }
-  //   });
-  // };
-
-  const handleLogin = () => {
-    setLoggedIn(true);
-    setUserData("1");
+  const handleLogin = (formValue) => {
+    auth
+      .authorize(formValue.email, formValue.password)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          setLoggedIn(true);
+          setUserData(formValue.email, formValue.password);
+          navigate("/home", { replace: true });
+        }
+      })
+      .catch((err) => console.log(`Ошибка.....: ${err}`));
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     setLoggedIn(false);
+    navigate("/sign-in", { replace: true });
+  };
+
+  const handleRegister = (formValue) => {
+    auth
+      .register(formValue.email, formValue.password)
+      .then((res) => {
+        navigate("/sign-in", { replace: true });
+        handleLoginInfoPopupOpen();
+        setRegisteredIn(true);
+      })
+      .catch((err) => {
+        handleLoginInfoPopupOpen();
+        setRegisteredIn(false);
+        console.log(`Ошибка.....: ${err}`);
+      });
   };
 
   const handleTokenCheck = () => {
     const token = localStorage.getItem("token");
     if (token) {
       auth.checkToken(token).then((res) => {
-        // let userData = {
-        //   email: res.email,
-        // };
         setLoggedIn(true);
-        // setUserData(res.email);
-        navigate(
-          "/home"
-          // , { replace: true }
-        );
+        setUserData(res.data.email);
+        navigate("/home", { replace: true });
       });
     }
   };
@@ -161,13 +169,9 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
 
-  const [loginInfoPopupOpen, setLoginInfoPopupOpen] = useState(false);
-
   function handleLoginInfoPopupOpen() {
     setLoginInfoPopupOpen(true);
   }
-
-  const [registeredIn, setRegisteredIn] = useState(false);
 
   function closeAllPopups() {
     setIsAddPlacePopupOpen(false);
@@ -184,7 +188,7 @@ function App() {
         <div className="page">
           <Header
             loggedIn={loggedIn}
-             userData={userData}
+            userData={userData}
             handleLogout={handleLogout}
           />
           <InfoTooltip
@@ -206,12 +210,7 @@ function App() {
             />
             <Route
               path="/sign-up"
-              element={
-                <Register
-                  loginInfoMessage={handleLoginInfoPopupOpen}
-                  setRegisteredIn={setRegisteredIn}
-                />
-              }
+              element={<Register handleRegister={handleRegister} />}
             />
             <Route
               path="/sign-in"
@@ -234,15 +233,7 @@ function App() {
               }
             />
           </Routes>
-          {/* <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            cards={cards}
-            onCardClick={setSelectedCard}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          /> */}
+
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}

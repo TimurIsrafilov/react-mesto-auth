@@ -37,18 +37,18 @@
 @import url("./blocks/popup/__close-icon/popup__close-icon.css");
 @import url("./blocks/popup/__mask-group/popup__mask-group.css");
 @import url("./blocks/popup/__phototitle/popup__phototitle.css");
+@import url("./blocks/popup/__symbol/popup__symbol.css");
+@import url("./blocks/popup/__symbol-container/popup__symbol-container.css");
+@import url("./blocks/popup/__login-info/popup__login-info.css");
+@import url("./blocks/popup/__login-info-container/popup__login-info-container.css");
 @import url("./blocks/elements/__like-container/elements__like-container.css");
 @import url("./blocks/elements/__likes-number/elements__likes-number.css");
-
-
 @import url("./blocks/header/__login-email/header__login-email.css");
 @import url("./blocks/header/__login-status/header__login-status.css");
 @import url("./blocks/header/__login-info/header__login-info.css");
 @import url("./blocks/header/__container/header__container.css");
-
 @import url("./blocks/header/__login-status-button/header__login-status-button.css");
 @import url("./blocks/header/__login-status-text/header__login-status-text.css");
-
 @import url("./blocks/auth-form/auth-form.css");
 @import url("./blocks/auth-form/__container/auth-form__container.css");
 @import url("./blocks/auth-form/__form/auth-form__form.css");
@@ -61,15 +61,3 @@
 @import url("./blocks/auth-form/__note/auth-form__note.css");
 @import url("./blocks/auth-form/__link/auth-form__link.css");
 @import url("./blocks/auth-form/__note-container/auth-form__note-container.css");
-
-@import url("./blocks/popup/__symbol/popup__symbol.css");
-@import url("./blocks/popup/__symbol-container/popup__symbol-container.css");
-
-@import url("./blocks/popup/__login-info/popup__login-info.css");
-@import url("./blocks/popup/__login-info-container/popup__login-info-container.css");
-
-
-
-
-
-

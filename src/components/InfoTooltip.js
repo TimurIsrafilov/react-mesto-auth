@@ -32,7 +32,6 @@ function InfoTooltip(props) {
           onClick={props.onClose}
         ></button>
       </div>
-      //{" "}
     </div>
   );
 }

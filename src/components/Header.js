@@ -1,14 +1,10 @@
 import logo from "../images/logo.svg";
 import React from "react";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 function Header(props) {
-  const navigate = useNavigate();
-
   function signOut() {
-    localStorage.removeItem("token");
     props.handleLogout();
-    navigate("/sign-in");
   }
 
   return (
@@ -17,10 +13,7 @@ function Header(props) {
         <img className="header__logo" alt="Лого" src={logo} />
         <div className="header__login-info">
           <h2 className="header__login-email">
-            {props.loggedIn
-              ? // "1"
-                props.userData
-              : ""}
+            {props.loggedIn ? props.userData : ""}
           </h2>
           <h2 className="header__login-status">
             <Routes>
