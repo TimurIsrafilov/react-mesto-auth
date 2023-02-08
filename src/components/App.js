@@ -10,6 +10,20 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 
+import { Routes } from "react-router-dom";
+import { Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import ProtectedRoute from "./ProtectedRoute";
+
+import Login from "./Login.js";
+import Register from "./Register.js";
+
+import InfoTooltip from "./InfoTooltip.js";
+
+import * as auth from "../auth.js";
+
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -17,6 +31,53 @@ function App() {
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(
+    // {email: "",}
+    "");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    handleTokenCheck();
+  }, []);
+
+  // const handleLogin = (formValue) => {
+  //   auth.authorize(formValue.email, formValue.password).then((data) => {
+  //     if (data.token) {
+  //       localStorage.setItem("token", data.token);
+  //       setLoggedIn(true);
+  //       navigate("/home", { replace: true });
+  //     }
+  //   });
+  // };
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+    setUserData("1");
+  };
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+  };
+
+  const handleTokenCheck = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      auth.checkToken(token).then((res) => {
+        // let userData = {
+        //   email: res.email,
+        // };
+        setLoggedIn(true);
+        // setUserData(res.email);
+        navigate(
+          "/home"
+          // , { replace: true }
+        );
+      });
+    }
+  };
 
   useEffect(() => {
     api
@@ -67,10 +128,8 @@ function App() {
   }
 
   function handleCardLike(card) {
-    // Проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
@@ -102,20 +161,80 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
 
+  const [loginInfoPopupOpen, setLoginInfoPopupOpen] = useState(false);
+
+  function handleLoginInfoPopupOpen() {
+    setLoginInfoPopupOpen(true);
+  }
+
+  const [registeredIn, setRegisteredIn] = useState(false);
+
   function closeAllPopups() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setSelectedCard(null);
+
+    setLoginInfoPopupOpen(false);
   }
 
   return (
     <div className="App">
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
-          <Header />
-
-          <Main
+          <Header
+            loggedIn={loggedIn}
+             userData={userData}
+            handleLogout={handleLogout}
+          />
+          <InfoTooltip
+            isOpen={loginInfoPopupOpen}
+            onClose={closeAllPopups}
+            name="login-info"
+            registeredIn={registeredIn}
+          />
+          <Routes>
+            <Route
+              path="*"
+              element={
+                loggedIn ? (
+                  <Navigate to="/home" replace />
+                ) : (
+                  <Navigate to="/sign-up" replace />
+                )
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={
+                <Register
+                  loginInfoMessage={handleLoginInfoPopupOpen}
+                  setRegisteredIn={setRegisteredIn}
+                />
+              }
+            />
+            <Route
+              path="/sign-in"
+              element={<Login handleLogin={handleLogin} />}
+            />
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute
+                  element={Main}
+                  loggedIn={loggedIn}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  cards={cards}
+                  onCardClick={setSelectedCard}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                />
+              }
+            />
+          </Routes>
+          {/* <Main
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
@@ -123,8 +242,7 @@ function App() {
             onCardClick={setSelectedCard}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
-          />
-
+          /> */}
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}

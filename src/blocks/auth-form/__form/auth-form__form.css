@@ -1,0 +1,15 @@
+.auth-form__form {
+  display: flex;
+  flex-direction: column;
+  width: 430px;
+  background: rgba(0, 0, 0, 1);
+  /* box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 10px; */
+  margin: 0;
+}
+
+@media screen and (max-width: 598px) {
+  .auth-form__form {
+    width: 282px;
+  }
+}
