@@ -27,10 +27,14 @@ function Login(props) {
     auth.authorize(formValue.email, formValue.password).then((data) => {
       if (data.token) {
         localStorage.setItem("token", data.token);
+
+        
         props.handleLogin();
         navigate("/home"
         // , { replace: true }
         );
+
+
         setFormValue({ password: "", email: "" });
         // setFormValue({ email: "", password: "" });
         

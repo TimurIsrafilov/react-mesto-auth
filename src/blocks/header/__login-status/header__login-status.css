@@ -1,10 +1,4 @@
 .header__login-status {
-    font-family: 'Inter', 'Arial', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 22px;
-    color: rgba(255, 255, 255, 1);
     margin: 0 0 0 24px;
-    text-decoration: none;
+    padding: 0;
   }

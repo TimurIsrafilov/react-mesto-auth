@@ -46,6 +46,9 @@
 @import url("./blocks/header/__login-info/header__login-info.css");
 @import url("./blocks/header/__container/header__container.css");
 
+@import url("./blocks/header/__login-status-button/header__login-status-button.css");
+@import url("./blocks/header/__login-status-text/header__login-status-text.css");
+
 @import url("./blocks/auth-form/auth-form.css");
 @import url("./blocks/auth-form/__container/auth-form__container.css");
 @import url("./blocks/auth-form/__form/auth-form__form.css");

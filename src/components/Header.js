@@ -18,18 +18,16 @@ function Header(props) {
         <div className="header__login-info">
           <h2 className="header__login-email">
             {props.loggedIn
-              ? 
-              // "1"
-              props.userData
-              :
-                ""}
+              ? // "1"
+                props.userData
+              : ""}
           </h2>
           <h2 className="header__login-status">
             <Routes>
               <Route
                 path="/sign-up"
                 element={
-                  <Link to="/sign-in" className="header__login-status">
+                  <Link to="/sign-in" className="header__login-status-text">
                     {"Войти"}
                   </Link>
                 }
@@ -37,7 +35,7 @@ function Header(props) {
               <Route
                 path="/sign-in"
                 element={
-                  <Link to="/sign-up" className="header__login-status">
+                  <Link to="/sign-up" className="header__login-status-text">
                     {"Регистрация"}
                   </Link>
                 }
@@ -47,7 +45,7 @@ function Header(props) {
                 element={
                   <button
                     onClick={signOut}
-                    className="header__login-status"
+                    className="header__login-status-button"
                   >
                     {"Выйти"}
                   </button>

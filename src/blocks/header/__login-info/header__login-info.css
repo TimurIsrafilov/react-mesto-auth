@@ -1,5 +1,10 @@
 .header__login-info {
     display: flex;
     flex-direction: row;
-    margin-top: 6px;
+  }
+  
+  @media screen and (max-width: 598px) {
+    .header__login-info {
+      margin: 0 27px 0 0;
+    }
   }

@@ -1,18 +1,19 @@
-.auth-form__link {
+.header__login-status-text {
     font-family: 'Inter', 'Arial', sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    margin: 0 0 20px 5px;
+    font-size: 18px;
+    line-height: 22px;
     color: rgba(255, 255, 255, 1);
-    text-align: center;
     text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
     opacity: 1;
     transition: 0.5s;
-  }
+}
 
-  .auth-form__link:hover {
+.header__login-status-text:hover {
     opacity: 0.6;
     transition: 0.5s;
-  }
+}
