@@ -34,7 +34,7 @@ function Header(props) {
                 }
               />
               <Route
-                path="/home"
+                path="/"
                 element={
                   <button
                     onClick={signOut}

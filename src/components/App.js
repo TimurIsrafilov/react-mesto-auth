@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -9,12 +10,6 @@ import api from "../utils/api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-
-import { Routes } from "react-router-dom";
-import { Route } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login.js";
 import Register from "./Register.js";
@@ -49,10 +44,14 @@ function App() {
           localStorage.setItem("token", data.token);
           setLoggedIn(true);
           setUserData(formValue.email, formValue.password);
-          navigate("/home", { replace: true });
+          navigate("/", { replace: true });
         }
       })
-      .catch((err) => console.log(`Ошибка.....: ${err}`));
+      .catch((err) => {
+        handleLoginInfoPopupOpen();
+        setLoggedIn(false);
+        console.log(`Ошибка.....: ${err}`);
+      });
   };
 
   const handleLogout = () => {
@@ -79,19 +78,24 @@ function App() {
   const handleTokenCheck = () => {
     const token = localStorage.getItem("token");
     if (token) {
-      auth.checkToken(token).then((res) => {
-        setLoggedIn(true);
-        setUserData(res.data.email);
-        navigate("/home", { replace: true });
-      });
+      auth
+        .checkToken(token)
+        .then((res) => {
+          setLoggedIn(true);
+          setUserData(res.data.email);
+          navigate("/", { replace: true });
+        })
+        .catch((err) => {
+          console.log(`Ошибка.....: ${err}`);
+        });
     }
   };
 
   useEffect(() => {
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCards(res);
+    Promise.all([api.getProfileInfo(), api.getInitialCards()])
+      .then(([data, cards]) => {
+        setCurrentUser(data);
+        setCards(cards);
       })
       .catch((err) => console.log(`Ошибка.....: ${err}`));
   }, []);
@@ -105,15 +109,6 @@ function App() {
       })
       .catch((err) => console.log(`Ошибка.....: ${err}`));
   }
-
-  useEffect(() => {
-    api
-      .getProfileInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => console.log(`Ошибка.....: ${err}`));
-  }, []);
 
   function handleUpdateUser(user) {
     api
@@ -178,8 +173,8 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setSelectedCard(null);
-
     setLoginInfoPopupOpen(false);
+    setRegisteredIn(false);
   }
 
   return (
@@ -202,7 +197,7 @@ function App() {
               path="*"
               element={
                 loggedIn ? (
-                  <Navigate to="/home" replace />
+                  <Navigate to="/" replace />
                 ) : (
                   <Navigate to="/sign-up" replace />
                 )
@@ -217,7 +212,7 @@ function App() {
               element={<Login handleLogin={handleLogin} />}
             />
             <Route
-              path="/home"
+              path="/"
               element={
                 <ProtectedRoute
                   element={Main}
