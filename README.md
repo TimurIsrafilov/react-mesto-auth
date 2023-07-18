@@ -19,4 +19,4 @@
 
 
 ### Ссылка на проект:
-https://timurisrafilov.github.io/mesto/
+https://timurisrafilov.github.io/react-mesto-auth/
